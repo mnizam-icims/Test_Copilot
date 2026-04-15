@@ -2,7 +2,7 @@ const prisma = require('../lib/prisma');
 
 async function getSummary(req, res, next) {
   try {
-    const [statusGroups, priorityGroups, users, assigneeTickets] = await Promise.all([
+    const [statusGroups, priorityGroups, users, assigneeTickets, recentActivity] = await Promise.all([
       prisma.ticket.groupBy({
         by: ['status'],
         _count: { _all: true },
@@ -19,16 +19,24 @@ async function getSummary(req, res, next) {
         _count: { _all: true },
         where: { assigneeId: { not: null } },
       }),
+      prisma.activityLog.findMany({
+        take: 10,
+        orderBy: { timestamp: 'desc' },
+        include: {
+          user: { select: { id: true, name: true } },
+          ticket: { select: { id: true, title: true } },
+        },
+      }),
     ]);
 
-    const countsByStatus = {};
+    const statusMap = {};
     for (const group of statusGroups) {
-      countsByStatus[group.status] = group._count._all;
+      statusMap[group.status] = group._count._all;
     }
 
-    const countsByPriority = {};
+    const byPriority = {};
     for (const group of priorityGroups) {
-      countsByPriority[group.priority] = group._count._all;
+      byPriority[group.priority] = group._count._all;
     }
 
     const userMap = {};
@@ -37,17 +45,21 @@ async function getSummary(req, res, next) {
     }
 
     const assigneeWorkload = assigneeTickets.map((group) => ({
-      assignee: userMap[group.assigneeId] || { id: group.assigneeId, name: 'Unknown' },
+      name: userMap[group.assigneeId]?.name || 'Unknown',
       ticketCount: group._count._all,
     }));
 
-    const totalTickets = await prisma.ticket.count();
+    const total = await prisma.ticket.count();
 
     return res.json({
-      totalTickets,
-      countsByStatus,
-      countsByPriority,
+      total,
+      open: statusMap['OPEN'] || 0,
+      inProgress: statusMap['IN_PROGRESS'] || 0,
+      blocked: statusMap['BLOCKED'] || 0,
+      done: statusMap['DONE'] || 0,
+      byPriority,
       assigneeWorkload,
+      recentActivity,
     });
   } catch (err) {
     next(err);

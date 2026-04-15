@@ -14,7 +14,7 @@ const schema = z.object({
   severity: z.string().min(1, 'Severity is required'),
   status: z.string().min(1, 'Status is required'),
   testType: z.string().optional(),
-  sprint: z.string().optional(),
+  sprintName: z.string().optional(),
   playwrightTestFile: z.string().optional(),
   testCaseId: z.string().optional(),
   blockedReason: z.string().optional(),
@@ -48,7 +48,7 @@ export default function CreateTicketModal({ onClose, onCreated }) {
       severity: 'MINOR',
       status: 'OPEN',
       testType: '',
-      sprint: '',
+      sprintName: '',
       playwrightTestFile: '',
       testCaseId: '',
       blockedReason: '',
@@ -167,7 +167,7 @@ export default function CreateTicketModal({ onClose, onCreated }) {
 
           <div>
             <label className={labelClass}>Sprint</label>
-            <input type="text" {...register('sprint')} className={inputClass} placeholder="e.g. Sprint 12" />
+            <input type="text" {...register('sprintName')} className={inputClass} placeholder="e.g. Sprint 12" />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -204,7 +204,6 @@ export default function CreateTicketModal({ onClose, onCreated }) {
           </button>
           <button
             type="submit"
-            form=""
             disabled={submitting}
             onClick={handleSubmit(onSubmit)}
             className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-800 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition flex items-center gap-2"

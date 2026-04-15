@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
 import { updateTicket, getTicketActivity } from '../api/tickets'
-import StatusBadge from './StatusBadge'
 import ActivityLog from './ActivityLog'
 
 const schema = z.object({
@@ -14,7 +13,7 @@ const schema = z.object({
   priority: z.string().min(1),
   severity: z.string().min(1),
   testType: z.string().optional(),
-  sprint: z.string().optional(),
+  sprintName: z.string().optional(),
   playwrightTestFile: z.string().optional(),
   testCaseId: z.string().optional(),
   blockedReason: z.string().optional(),
@@ -67,7 +66,7 @@ export default function TicketDetailPanel({ ticket, onClose, onUpdate }) {
       priority: ticket.priority || 'MEDIUM',
       severity: ticket.severity || 'MINOR',
       testType: ticket.testType || '',
-      sprint: ticket.sprint || '',
+      sprintName: ticket.sprintName || '',
       playwrightTestFile: ticket.playwrightTestFile || '',
       testCaseId: ticket.testCaseId || '',
       blockedReason: ticket.blockedReason || '',
@@ -86,7 +85,7 @@ export default function TicketDetailPanel({ ticket, onClose, onUpdate }) {
       priority: ticket.priority || 'MEDIUM',
       severity: ticket.severity || 'MINOR',
       testType: ticket.testType || '',
-      sprint: ticket.sprint || '',
+      sprintName: ticket.sprintName || '',
       playwrightTestFile: ticket.playwrightTestFile || '',
       testCaseId: ticket.testCaseId || '',
       blockedReason: ticket.blockedReason || '',
@@ -190,7 +189,7 @@ export default function TicketDetailPanel({ ticket, onClose, onUpdate }) {
 
           <div>
             <label className={labelClass}>Sprint</label>
-            <input type="text" {...register('sprint')} className={inputClass} placeholder="e.g. Sprint 12" />
+            <input type="text" {...register('sprintName')} className={inputClass} placeholder="e.g. Sprint 12" />
           </div>
 
           <div>

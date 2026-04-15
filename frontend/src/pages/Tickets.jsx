@@ -15,7 +15,7 @@ export default function Tickets() {
     assigneeId: '',
     status: '',
     priority: '',
-    sprint: '',
+    sprintName: '',
     testType: '',
   })
   const [showCreate, setShowCreate] = useState(false)
@@ -27,6 +27,11 @@ export default function Tickets() {
     const params = Object.fromEntries(
       Object.entries(filters).filter(([, v]) => v !== '')
     )
+    // Backend expects `sprint` query param for sprintName filter
+    if (params.sprintName) {
+      params.sprint = params.sprintName
+      delete params.sprintName
+    }
     getTickets(params)
       .then((res) => setTickets(res.data))
       .catch(() => toast.error('Failed to load tickets'))

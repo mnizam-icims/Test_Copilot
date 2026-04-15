@@ -81,7 +81,7 @@ export default function TicketTable({ tickets, onTicketClick, onStatusChange }) 
                   {ticket.testType?.replace('_', ' ') || '—'}
                 </td>
                 <td className="px-4 py-3 text-slate-400 text-xs">
-                  {ticket.sprint || '—'}
+                  {ticket.sprintName || '—'}
                 </td>
                 <td className="px-4 py-3 text-slate-500 text-xs">
                   {ticket.updatedAt

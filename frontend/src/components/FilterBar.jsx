@@ -18,7 +18,7 @@ export default function FilterBar({ filters, onFilterChange }) {
     onFilterChange('assigneeId', '')
     onFilterChange('status', '')
     onFilterChange('priority', '')
-    onFilterChange('sprint', '')
+    onFilterChange('sprintName', '')
     onFilterChange('testType', '')
   }
 
@@ -83,8 +83,8 @@ export default function FilterBar({ filters, onFilterChange }) {
           <input
             type="text"
             className={selectClass}
-            value={filters.sprint}
-            onChange={(e) => onFilterChange('sprint', e.target.value)}
+            value={filters.sprintName}
+            onChange={(e) => onFilterChange('sprintName', e.target.value)}
             placeholder="e.g. Sprint 12"
           />
         </div>
