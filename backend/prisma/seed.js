@@ -295,7 +295,7 @@ async function main() {
   const actions = ['created', 'status_changed', 'priority_changed', 'assigned', 'comment_added'];
 
   for (const ticket of tickets) {
-    const author = users[Math.floor(Math.random() * users.length)];
+    const author = users[tickets.indexOf(ticket) % users.length];
 
     await prisma.activityLog.create({
       data: {
