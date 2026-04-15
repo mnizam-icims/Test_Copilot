@@ -1,8 +1,6 @@
 import React from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import StatusBadge from './StatusBadge'
-import { updateTicket } from '../api/tickets'
-import toast from 'react-hot-toast'
 
 const STATUS_OPTIONS = ['OPEN', 'IN_PROGRESS', 'BLOCKED', 'DONE']
 
